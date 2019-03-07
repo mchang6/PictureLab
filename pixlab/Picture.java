@@ -217,7 +217,53 @@ public class Picture extends SimplePicture
     }
   }
   
+  /** Set red and green values to zero */
+  public void keepOnlyBlue()
+  {
+     Pixel[][] pixels = this.getPixels2D();
+     for (Pixel[] i: pixels)
+     {
+         for (Pixel j: i)
+         {
+             j.setRed(0);
+             j.setGreen(0);
+         }
+     }
+  }
   
+  /** Negate the pixels in the picture */
+  public void negate()
+  {
+      Pixel[][] pixels = this.getPixels2D();
+      for (Pixel[] i: pixels)
+      {
+          for (Pixel j: i)
+          {
+              j.setRed(255-j.getRed());
+              j.setBlue(255-j.getBlue());
+              j.setGreen(255-j.getGreen());
+          }
+      }
+  }
+  
+  /** Turn the picture into shades of gray */
+  public void grayscale()
+  {
+      Pixel[][] pixels = this.getPixels2D();
+      int total;
+      for (Pixel[] i: pixels)
+      {
+          for (Pixel j: i)
+          {
+              total = (j.getRed()+j.getGreen()+j.getBlue());
+              total/=3;
+              j.setRed(total);
+              j.setGreen(total);
+              j.setBlue(total);
+          }
+      }
+  }
+              
   /* Main method for testing - each class in Java can have a main 
    * method 
    */
