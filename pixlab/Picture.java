@@ -96,6 +96,32 @@ public class Picture extends SimplePicture
         pixelObj.setBlue(0);
       }
     }
+  } // END zeroBlue()
+  
+  /** Method to set the red to 0 */
+  public void zeroRed()
+  {
+    Pixel[][] image = this.getPixels2D();
+    for (Pixel[] row: image)
+    {
+        for (Pixel p: row)
+        {
+            p.setRed(0);
+        }
+    }
+  } //END zeroRed
+  
+  /** Method to set the green to 0 */
+  public void zeroGreen()
+  {
+    Pixel[][] image = this.getPixels2D();
+    for (Pixel[] row: image)
+    {
+        for (Pixel p: row)
+        {
+            p.setGreen(0);
+        }
+    }
   }
   
   /** Method that mirrors the picture around a 
@@ -220,15 +246,8 @@ public class Picture extends SimplePicture
   /** Set red and green values to zero */
   public void keepOnlyBlue()
   {
-     Pixel[][] pixels = this.getPixels2D();
-     for (Pixel[] i: pixels)
-     {
-         for (Pixel j: i)
-         {
-             j.setRed(0);
-             j.setGreen(0);
-         }
-     }
+    zeroRed();
+    zeroGreen();
   }
   
   /** Negate the pixels in the picture */
@@ -262,6 +281,35 @@ public class Picture extends SimplePicture
               j.setBlue(total);
           }
       }
+  }
+  
+  public void fixUnderwater()
+  {
+    Pixel[][] image = this.getPixels2D();
+    Pixel j;
+    for (int i=0; i<180; i++)
+    {
+        for (int q=100; q<470; q++)
+        {
+            j = image[i][q];
+            if (j.getRed()<30 && j.getBlue()>155 && j.getGreen()<175)
+            {
+                j.setRed(255);
+                j.setBlue(0);
+            }
+        }
+    }
+    
+    for (Pixel[] row: image)
+    {
+        for (Pixel p: row)
+        {
+            if (p.getRed()!=255)
+            {
+                p.setBlue(p.getBlue()-50);
+            }
+        }
+    }
   }
               
   /* Main method for testing - each class in Java can have a main 
