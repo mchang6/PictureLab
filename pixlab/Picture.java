@@ -248,7 +248,17 @@ public class Picture extends SimplePicture
     int mirrorpoint = 200;
     for (int row = 155; row< mirrorpoint; row++)
     {    
-        for (int col = 100; col < 300; col++)
+        for (int col = 100; col < 180; col++)
+        {
+          topPixel = image[row][col];
+          bottomPixel = image[mirrorpoint+mirrorpoint - row][col];
+          bottomPixel.setColor(topPixel.getColor());
+        }
+    }
+    
+    for (int row = 155; row< mirrorpoint; row++)
+    {    
+        for (int col = 230; col < 300; col++)
         {
           topPixel = image[row][col];
           bottomPixel = image[mirrorpoint+mirrorpoint - row][col];
@@ -263,10 +273,10 @@ public class Picture extends SimplePicture
     Pixel[][] image = this.getPixels2D();
     Pixel leftPixel; 
     Pixel rightPixel;
-    int mirrorpoint = 400;
-    for (int row = 300; row<450; row++)
+    int mirrorpoint = 350;
+    for (int row = 220; row<350; row++)
     {
-        for (int col = 150; col<mirrorpoint; col++)
+        for (int col = 220; col<mirrorpoint; col++)
         {
             leftPixel = image[row][col];
             rightPixel = image[row][mirrorpoint+mirrorpoint-col];
@@ -305,24 +315,65 @@ public class Picture extends SimplePicture
       }
     }   
   }
-
+  
+  public void copy(Picture fromPic, 
+                 int startRow, int startCol,
+                 int fSR,      int fSC,
+                 int fER,      int fEC)
+  {
+    Pixel fromPixel = null;
+    Pixel toPixel = null;
+    Pixel[][] toPixels = this.getPixels2D();
+    Pixel[][] fromPixels = fromPic.getPixels2D();
+    for (int fromRow = fSR, toRow = startRow; 
+         fromRow < fER &&
+         toRow < toPixels.length; 
+         fromRow++, toRow++)
+    {
+      for (int fromCol = fSC, toCol = startCol; 
+           fromCol < fEC &&
+           toCol < toPixels[0].length;  
+           fromCol++, toCol++)
+      {
+        fromPixel = fromPixels[fromRow][fromCol];
+        toPixel = toPixels[toRow][toCol];
+        toPixel.setColor(fromPixel.getColor());
+      }
+    }   
+  }
+  
   /** Method to create a collage of several pictures */
   public void createCollage()
   {
     Picture flower1 = new Picture("flower1.jpg");
     Picture flower2 = new Picture("flower2.jpg");
-    this.copy(flower1,0,0);
-    this.copy(flower2,100,0);
-    this.copy(flower1,200,0);
+    this.copy(flower1,0,20);
+    this.copy(flower2,100,40);
+    this.copy(flower1,200,60);
     Picture flowerNoBlue = new Picture(flower2);
     flowerNoBlue.zeroBlue();
-    this.copy(flowerNoBlue,300,0);
-    this.copy(flower1,400,0);
-    this.copy(flower2,500,0);
+    this.copy(flowerNoBlue,300,80);
+    this.copy(flower1,400,100);
+    this.copy(flower2,500,120);
     this.mirrorVertical();
     this.write("collage.jpg");
   }
   
+  public void myCollage()
+  {
+    Picture gull = new Picture("flower1.jpg");
+    Picture gullNegate = new Picture(gull);
+    gullNegate.negate();
+    Picture gullGrayscale = new Picture(gull);
+    gullGrayscale.grayscale();
+    Picture gullZeroBlue = new Picture(gull);
+    gullZeroBlue.zeroBlue();
+    this.copy(gull, 0, 20);
+    this.copy(gullNegate, 100, 40);
+    this.copy(gullGrayscale, 200, 60);
+    this.mirrorVertical();
+    this.copy(gullZeroBlue, 150, 200);
+  }
   
   /** Method to show large changes in color 
     * @param edgeDist the distance for finding edges
