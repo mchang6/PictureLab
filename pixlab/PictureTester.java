@@ -133,6 +133,15 @@ public class PictureTester
     canvas.explore();
   }
   
+  /** Method to test copy */
+  public static void testCopy()
+  {
+    Picture ocean = new Picture("beach.jpg");
+    Picture daddy = new Picture("snowman.jpg");
+    ocean.copy(daddy,10, 10, 60, 158,180, 230);
+    ocean.explore();
+  }
+  
   /** Method to test the myCollage method */
   public static void testMyCollage()
   {
@@ -173,8 +182,8 @@ public class PictureTester
     //testMirrorGull();
     //testMirrorDiagonal();
     //testCollage();
-    //testCopy();
-    testMyCollage();
+    testCopy();
+    //testMyCollage();
     //testEdgeDetection();
     //testEdgeDetection2();
     //testChromakey();
